@@ -5,7 +5,25 @@
 This project is for a technical evaluation using React, NodeJS and Docker
 
 
+The project is planed use the following components
+- *backend* with nodejs, express and express session.
+- *frontend* with react
+- *DB* with SQL Express Server
 
+
+## Status of todos
+- [x] Design of views with mockups and ER schema
+- [ ] First design for testing API(postman)
+- [ ] REST Api implemented
+- [ ] Postman runner passed
+- [ ] Frontend implemented
+ 
+
+
+📝 Note:
+This project was originally developed in Spanish for a technical evaluation on a government institution in Guatemala.  
+All table names, variables, and internal comments are in Spanish for consistency.  
+If you are reviewing this as part of my portfolio, a fully translated version is planned.
 
 ## License
 
