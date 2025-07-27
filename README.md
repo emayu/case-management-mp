@@ -13,7 +13,7 @@ The project is planed use the following components
 
 ## Status of todos
 - [x] Design of views with mockups and ER schema
-- [ ] First design for testing API(postman)
+- [x] First design for testing API(postman)
 - [ ] REST Api implemented
 - [ ] Postman runner passed
 - [ ] Frontend implemented
