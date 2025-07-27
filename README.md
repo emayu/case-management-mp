@@ -6,9 +6,12 @@ This project is for a technical evaluation using React, NodeJS and Docker
 
 
 The project is planed use the following components
-- *backend* with nodejs, express and express session.
-- *frontend* with react
-- *DB* with SQL Express Server
+- *backend:* with nodejs, express and express session.
+- *frontend:* with react
+- *DB:* with SQL Express Server
+- *ORM:* Sequelize
+- *Session Store:* SQL-based session Table
+- *API Testing:* Postman + Newman
 
 
 ## Status of todos
@@ -22,10 +25,33 @@ The project is planed use the following components
 
 📝 Note:
 This project was originally developed in Spanish for a technical evaluation on a government institution in Guatemala.  
-All table names, variables, and internal comments are in Spanish for consistency.  
+All table names, some endpoint and views are in Spanish for consistency.  
 If you are reviewing this as part of my portfolio, a fully translated version is planned.
 
-## License
+## Monitoring Endpoints
 
+- `/healthz`: Simple health check
+- `/version`: Returns build tag for deployment tracing
+##  (Backend)
+### 📁 Folder Structure
+```
+src/
+├── config/ # Configuration (DB, sessions)
+├── controllers/ # Route logic (handlers)
+├── models/ # Sequelize models
+├── routes/ # Route definitions
+├── middlewares/ # Auth, error handling
+├── utils/ # Helpers, logging
+├── app.ts # Express app definition
+└── server.ts # Application entry point
+```
+_Note: Due to time constraints, a service/repository architecture was not implemented, but the current structure allows easy future migration._
+
+### Monitoring Endpoints
+- `/healthz`: Simple health check
+- `/version`: Returns build tag for deployment tracing
+
+## License
+© 2025 Héctor Yaque — All rights reserved.
 This project is licensed under the [Creative Commons BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/) license.  
 You may view the code, but you may not use it for commercial purposes or create derivative works without explicit permission.
