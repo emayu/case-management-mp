@@ -7,15 +7,17 @@
 
 import express, { Express } from "express";
 import morgan from "morgan";
+import authRoutes from "./routes/auth.routes";
+import { sessionMiddleware } from "./config/session";
 
 console.log(
     'ENV:', process.env.ENV,
-    'PORT:', process.env.PORT
+    'PORT:', process.env.PORT,
+    'SESSION_SECRET ', process.env.SESSION_SECRET ? 'Is defined': undefined
 );
 
 const server:Express = express();
 const PORT = process.env.PORT || 3000;
-
 const ENV = process.env.ENV || "DEV";
 
 
@@ -25,6 +27,13 @@ if( ENV === "PROD"){
 }else{
     server.use(morgan('dev'));
 }
+
+//Middlewares base
+server.use(express.json());
+server.use(sessionMiddleware)
+
+//Ruta base de servidor
+server.use("/api/v1", authRoutes);
 
 server.get('/', (req, res)=> {
     res.send('Hello MP');  
