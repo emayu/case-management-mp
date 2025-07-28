@@ -9,6 +9,8 @@ import express, { Express } from "express";
 import morgan from "morgan";
 import authRoutes from "./routes/auth.routes";
 import { sessionMiddleware } from "./config/session";
+import cors from 'cors';
+import { Cookie } from "express-session";
 
 console.log(
     'ENV:', process.env.ENV,
@@ -29,6 +31,7 @@ if( ENV === "PROD"){
 }
 
 //Middlewares base
+server.use(cors());
 server.use(express.json());
 server.use(sessionMiddleware)
 
