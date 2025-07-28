@@ -7,10 +7,11 @@
 
 import express, { Express } from "express";
 import morgan from "morgan";
-import authRoutes from "./routes/auth.routes";
+import apiRoutes from "./routes";
 import { sessionMiddleware } from "./config/session";
 import cors from 'cors';
 import { Cookie } from "express-session";
+import bcrypt from 'bcrypt';
 
 console.log(
     'ENV:', process.env.ENV,
@@ -36,15 +37,7 @@ server.use(express.json());
 server.use(sessionMiddleware)
 
 //Ruta base de servidor
-server.use("/api/v1", authRoutes);
-
-server.get('/debug/session', (req, res ) => {
-    res.json( {
-        session: req.session,
-        sessionId: req.sessionID,
-        cookie: req.headers.cookie
-    });
-});
+server.use("/api/v1", apiRoutes);
 
 server.get('/', (req, res)=> {
     res.send('Hello MP');  
