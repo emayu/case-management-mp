@@ -38,6 +38,14 @@ server.use(sessionMiddleware)
 //Ruta base de servidor
 server.use("/api/v1", authRoutes);
 
+server.get('/debug/session', (req, res ) => {
+    res.json( {
+        session: req.session,
+        sessionId: req.sessionID,
+        cookie: req.headers.cookie
+    });
+});
+
 server.get('/', (req, res)=> {
     res.send('Hello MP');  
 });
