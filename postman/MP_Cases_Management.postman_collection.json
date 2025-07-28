@@ -613,41 +613,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "New Request",
-			"request": {
-				"method": "GET",
-				"header": []
-			},
-			"response": []
-		},
-		{
-			"name": "Session Test",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Cookie",
-						"value": "",
-						"type": "text",
-						"disabled": true
-					}
-				],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/debug/session",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"debug",
-						"session"
-					]
-				}
-			},
-			"response": []
 		}
 	],
 	"event": [
