@@ -149,6 +149,76 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Check not exists session",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											" pm.test(\"Status code returned Created correct\", function () {\r",
+											"     pm.response.to.have.status(401);\r",
+											" });\r",
+											"\r",
+											"pm.test(\"Content-Type is present\", function () {\r",
+											"    pm.response.to.have.header(\"Content-Type\");\r",
+											"});\r",
+											"\r",
+											"const responseData = pm.response.json();\r",
+											"pm.test(\"Result is an Object\", function () {\r",
+											"    pm.expect(responseData).to.be.an('object');\r",
+											"});\r",
+											"\r",
+											"pm.test(\"The Note has created correct\", function () {\r",
+											"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
+											"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
+											"});\r",
+											"\r",
+											"const expectedResponse = {\r",
+											"    \"status\": \"fail\",\r",
+											"    \"message\": \"No hay sesiones activas\"\r",
+											"}\r",
+											"\r",
+											"pm.test(\"The data is the correct\", function () {\r",
+											"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
+											"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/session",
+									"protocol": "http",
+									"host": [
+										"{{host}}"
+									],
+									"port": "{{port}}",
+									"path": [
+										"{{app_base}}",
+										"v1",
+										"session"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				},
@@ -259,7 +329,7 @@
 									"    \"usuario\": {\r",
 									"      \"id\": \"00000000-0000-0000-0000-000000000000\",\r",
 									"      \"nombre\": \"Fiscal Admin\",\r",
-									"      \"rol\": \"FISCAL\"\r",
+									"      \"rol\": \"ADMIN_SYSTEM\"\r",
 									"    }\r",
 									"  }\r",
 									"}\r",
@@ -365,35 +435,63 @@
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "Casos view",
+			"item": [
 				{
-					"name": "Post Lougout [Test]",
+					"name": "Casos",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									" pm.test(\"Status code returned Created correct\", function () {\r",
-									"     pm.response.to.have.status(401);\r",
+									"     pm.response.to.have.status(200);\r",
 									" });\r",
 									"\r",
 									"pm.test(\"Content-Type is present\", function () {\r",
 									"    pm.response.to.have.header(\"Content-Type\");\r",
 									"});\r",
 									"\r",
-									"const responseData = pm.response.json();\r",
+									"\r",
 									"pm.test(\"Result is an Object\", function () {\r",
+									"    const responseData = pm.response.json();\r",
 									"    pm.expect(responseData).to.be.an('object');\r",
 									"});\r",
 									"\r",
-									"pm.test(\"The Note has created correct\", function () {\r",
+									"\r",
+									"pm.test(\"Data has the correct structure\", function () {\r",
+									"    const responseData = pm.response.json();\r",
 									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
 									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"data\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Result is an Array with data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(Array.isArray(jsonData.data)).to.be.true;\r",
+									"    pm.expect(jsonData.data).be.greaterThan(0);\r",
 									"});\r",
 									"\r",
 									"const expectedResponse = {\r",
-									"    \"status\": \"fail\",\r",
-									"    \"message\": \"No hay sesiones activas\"\r",
+									"  \"status\": \"success\",\r",
+									"  \"message\": \"Lista de casos obtenida correctamente\",\r",
+									"  \"data\": [\r",
+									"    {\r",
+									"      \"id\": \"A888112F-5CC5-4FEE-8A4C-DD8A1F38C6AC\",\r",
+									"      \"nombre\": \"CASO-2025-001\",\r",
+									"      \"descripcion\": \"Caso de corrupción en entidad X\",\r",
+									"      \"estado\": \"pendiente\",\r",
+									"      \"fiscal_id\": null,\r",
+									"    //   \"fecha_creacion\": \"2025-07-26T13:00:00.000Z\",\r",
+									"    //   \"fecha_modificacion\": \"2025-07-27T18:30:00.000Z\",\r",
+									"      \"usuario_creacion\": \"00000000-0000-0000-0000-000000000000\",\r",
+									"      \"usuario_modificacion\": \"00000000-0000-0000-0000-000000000000\"\r",
+									"    }\r",
+									"  ]\r",
 									"}\r",
 									"\r",
 									"pm.test(\"The data is the correct\", function () {\r",
@@ -408,32 +506,6 @@
 							}
 						}
 					],
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/session",
-							"protocol": "http",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"{{app_base}}",
-								"v1",
-								"session"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Casos view",
-			"item": [
-				{
-					"name": "Casos",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -455,6 +527,64 @@
 				},
 				{
 					"name": "Fiscalias",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.test(\"Status code returned Created correct\", function () {\r",
+									"     pm.response.to.have.status(200);\r",
+									" });\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Result is an Object\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The data has the correct structure\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"data\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Result is an Array with data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(Array.isArray(jsonData.data)).to.be.true;\r",
+									"    pm.expect(jsonData.data).be.greaterThan(0);\r",
+									"});\r",
+									"\r",
+									"const expectedResponse = {\r",
+									"  \"status\": \"success\",\r",
+									"  \"message\": \"Lista de casos obtenida correctamente\",\r",
+									"  \"data\": [\r",
+									"    {\r",
+									"      \"id\": \"61f77c30-fb3e-4558-bdb1-1c8a1e765c90\",\r",
+									"      \"nombre\": \"Fiscalía Contra el Crimen Organizado\",\r",
+									"      \"ubicacion\": \"Ciudad de Guatemala\",\r",
+									"      \"activo\": true\r",
+									"    }\r",
+									"  ]\r",
+									"}\r",
+									"\r",
+									"pm.test(\"The data is the correct\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
+									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
+									"    pm.expect(responseData.data).to.eql(expectedResponse.data);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -476,11 +606,68 @@
 				},
 				{
 					"name": "Users by Fiscalias",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.test(\"Status code returned Created correct\", function () {\r",
+									"     pm.response.to.have.status(200);\r",
+									" });\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"const responseData = pm.response.json();\r",
+									"pm.test(\"Result is an Object\", function () {\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The data has the correct structur\", function () {\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"data\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Result is an Array with data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(Array.isArray(jsonData.data)).to.be.true;\r",
+									"    pm.expect(jsonData.data).be.greaterThan(0);\r",
+									"});\r",
+									"\r",
+									"const expectedResponse = {\r",
+									"  \"status\": \"success\",\r",
+									"  \"message\": \"Lista de usuarios obtenida correctamente\",\r",
+									"  \"data\": [\r",
+									"    {\r",
+									"      \"id\": \"8A8DD011-A79C-4A40-BEF0-730B51483734\",\r",
+									"      \"nombre\": \"Fiscal de Guate\",\r",
+									"      \"correo\": \"fiscal_1@mp.gob.gt\",\r",
+									"      \"rol\": \"FISCAL\",\r",
+									"      \"activo\": true,\r",
+									"      \"fiscalia_id\": \"D4604377-D30D-4A6C-AF07-8F4D40EB0189\"\r",
+									"    }\r",
+									"  ]\r",
+									"}\r",
+									"\r",
+									"pm.test(\"The data is the correct\", function () {\r",
+									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
+									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
+									"    pm.expect(responseData.data).to.eql(expectedResponse.data);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/usuarios?fiscalia_id=id",
+							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/usuarios?fiscalia_id=61f77c30-fb3e-4558-bdb1-1c8a1e765c90",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -494,7 +681,91 @@
 							"query": [
 								{
 									"key": "fiscalia_id",
-									"value": "id"
+									"value": "61f77c30-fb3e-4558-bdb1-1c8a1e765c90"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users by Fiscalias [Test]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.test(\"Status code returned Created correct\", function () {\r",
+									"     pm.response.to.have.status(200);\r",
+									" });\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"const responseData = pm.response.json();\r",
+									"pm.test(\"Result is an Object\", function () {\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The data has the correct structur\", function () {\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"data\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Result is an Array with data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(Array.isArray(jsonData.data)).to.be.true;\r",
+									"    pm.expect(jsonData.data).be.greaterThan(0);\r",
+									"});\r",
+									"\r",
+									"const expectedResponse = {\r",
+									"  \"status\": \"success\",\r",
+									"  \"message\": \"Lista de usuarios obtenida correctamente\",\r",
+									"  \"data\": [\r",
+									"    {\r",
+									"      \"id\": \"8A8DD011-A79C-4A40-BEF0-730B51483734\",\r",
+									"      \"nombre\": \"Fiscal de Guate\",\r",
+									"      \"correo\": \"fiscal_1@mp.gob.gt\",\r",
+									"      \"rol\": \"FISCAL\",\r",
+									"      \"activo\": true,\r",
+									"      \"fiscalia_id\": \"D4604377-D30D-4A6C-AF07-8F4D40EB0189\"\r",
+									"    }\r",
+									"  ]\r",
+									"}\r",
+									"\r",
+									"pm.test(\"The data is the correct\", function () {\r",
+									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
+									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
+									"    pm.expect(responseData.data).to.eql(expectedResponse.data);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/usuarios?fiscalia_id=61f77c30-fb3e-4558-bdb1-1c8a1e765c90",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{app_base}}",
+								"v1",
+								"usuarios"
+							],
+							"query": [
+								{
+									"key": "fiscalia_id",
+									"value": "61f77c30-fb3e-4558-bdb1-1c8a1e765c90"
 								}
 							]
 						}
@@ -674,6 +945,67 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Post Lougout [Test]",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" pm.test(\"Status code returned Created correct\", function () {\r",
+							"     pm.response.to.have.status(401);\r",
+							" });\r",
+							"\r",
+							"pm.test(\"Content-Type is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"});\r",
+							"\r",
+							"const responseData = pm.response.json();\r",
+							"pm.test(\"Result is an Object\", function () {\r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"The Note has created correct\", function () {\r",
+							"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
+							"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
+							"});\r",
+							"\r",
+							"const expectedResponse = {\r",
+							"    \"status\": \"fail\",\r",
+							"    \"message\": \"No hay sesiones activas\"\r",
+							"}\r",
+							"\r",
+							"pm.test(\"The data is the correct\", function () {\r",
+							"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
+							"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
+							"    pm.expect(responseData.data).to.eql(expectedResponse.data);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/session",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"{{app_base}}",
+						"v1",
+						"session"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"event": [
