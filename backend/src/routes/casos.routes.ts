@@ -1,9 +1,11 @@
 import { Router } from 'express';
-import { getCasos } from '../controllers/caso.controller';
+import { getCasos, getCasoById } from '../controllers/caso.controller';
 import { requireLogin } from '../middlewares/auth.middleware';
 
 const router = Router();
 
-router.get('/', requireLogin, getCasos);
+router.use( requireLogin)
+router.get('/', getCasos);
+router.get('/:id', getCasoById)
 
 export default router;

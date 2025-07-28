@@ -18,3 +18,30 @@ export async function getCasos(req: Request, res: Response) {
         })
     }
 }
+
+export async function getCasoById(req: Request, res: Response) {
+    const { id } = req.params;
+
+    try {
+        const caso = await Caso.findByPk(id);
+
+        if (caso == null) {
+            return sendResponse(res, 404, {
+                status: 'fail',
+                message: 'Caso no encontrado',
+            });
+        }
+
+        return sendResponse(res, 200, {
+            status: 'success',
+            message: 'Caso obtenido correctamente',
+            data: caso
+        });
+    } catch (error) {
+        console.log(error);
+        return sendResponse(res, 500, {
+            status: 'error',
+            message: 'Error al obtener el caso'
+        })
+    }
+}
