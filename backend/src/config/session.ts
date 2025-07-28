@@ -6,7 +6,7 @@ const SequelizeStore = SequelizeStoreFactory(session.Store);
 
 const store = new SequelizeStore({
     db: sequelize,
-    tableName: 'mp_casos_db.sesiones',
+    tableName: 'sesiones',
     checkExpirationInterval: 15 * 60 * 1000,
     expiration: 24 * 60 * 60 * 1000
   });
