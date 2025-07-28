@@ -7,221 +7,552 @@
 	},
 	"item": [
 		{
-			"name": "Login view",
+			"name": "0. Pre-Login auth test",
 			"item": [
 				{
-					"name": "test",
-					"item": [
+					"name": "Required contrasenia [Test]",
+					"event": [
 						{
-							"name": "Bad credencials",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											" pm.test(\"Status code returned Created correct\", function () {\r",
-											"     pm.response.to.have.status(400);//parametros malos\r",
-											" });\r",
-											"\r",
-											"pm.test(\"Content-Type is present\", function () {\r",
-											"    pm.response.to.have.header(\"Content-Type\");\r",
-											"});\r",
-											"\r",
-											"const responseData = pm.response.json();\r",
-											"pm.test(\"Result is an Object\", function () {\r",
-											"    pm.expect(responseData).to.be.an('object');\r",
-											"});\r",
-											"\r",
-											"pm.test(\"The Note has created correct\", function () {\r",
-											"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
-											"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
-											"});\r",
-											"\r",
-											"const expectedResponse = {\r",
-											"    \"status\": \"fail\",\r",
-											"    \"message\": \"Correo y contraseña requeridos\"\r",
-											"}\r",
-											"\r",
-											"pm.test(\"The data is the correct\", function () {\r",
-											"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
-											"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
-											"});\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"correo\": \"foo\"    \r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/login",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"port": "{{port}}",
-									"path": [
-										"{{app_base}}",
-										"v1",
-										"login"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Required contrasenia",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											" pm.test(\"Status code returned Created correct\", function () {\r",
-											"     pm.response.to.have.status(401);//no autorizado\r",
-											" });\r",
-											"\r",
-											"pm.test(\"Content-Type is present\", function () {\r",
-											"    pm.response.to.have.header(\"Content-Type\");\r",
-											"});\r",
-											"\r",
-											"const responseData = pm.response.json();\r",
-											"pm.test(\"Result is an Object\", function () {\r",
-											"    pm.expect(responseData).to.be.an('object');\r",
-											"});\r",
-											"\r",
-											"pm.test(\"The Note has created correct\", function () {\r",
-											"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
-											"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
-											"});\r",
-											"\r",
-											"const expectedResponse = {\r",
-											"    \"status\": \"fail\",\r",
-											"    \"message\": \"Credenciales inválidas\"\r",
-											"}\r",
-											"\r",
-											"pm.test(\"The data is the correct\", function () {\r",
-											"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
-											"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
-											"});\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"correo\": \"foo\",\r\n    \"contrasena\": \"123456\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/login",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"port": "{{port}}",
-									"path": [
-										"{{app_base}}",
-										"v1",
-										"login"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Check not exists session",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											" pm.test(\"Status code returned Created correct\", function () {\r",
-											"     pm.response.to.have.status(401);\r",
-											" });\r",
-											"\r",
-											"pm.test(\"Content-Type is present\", function () {\r",
-											"    pm.response.to.have.header(\"Content-Type\");\r",
-											"});\r",
-											"\r",
-											"const responseData = pm.response.json();\r",
-											"pm.test(\"Result is an Object\", function () {\r",
-											"    pm.expect(responseData).to.be.an('object');\r",
-											"});\r",
-											"\r",
-											"pm.test(\"The Note has created correct\", function () {\r",
-											"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
-											"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
-											"});\r",
-											"\r",
-											"const expectedResponse = {\r",
-											"    \"status\": \"fail\",\r",
-											"    \"message\": \"No hay sesiones activas\"\r",
-											"}\r",
-											"\r",
-											"pm.test(\"The data is the correct\", function () {\r",
-											"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
-											"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
-											"});\r",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"exec": [
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/session",
-									"protocol": "http",
-									"host": [
-										"{{host}}"
-									],
-									"port": "{{port}}",
-									"path": [
-										"{{app_base}}",
-										"v1",
-										"session"
-									]
-								}
-							},
-							"response": []
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.test(\"Status code returned Created correct\", function () {\r",
+									"     pm.response.to.have.status(401);//no autorizado\r",
+									" });\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"const responseData = pm.response.json();\r",
+									"pm.test(\"Result is an Object\", function () {\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The Note has created correct\", function () {\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
+									"});\r",
+									"\r",
+									"const expectedResponse = {\r",
+									"    \"status\": \"fail\",\r",
+									"    \"message\": \"Credenciales inválidas\"\r",
+									"}\r",
+									"\r",
+									"pm.test(\"The data is the correct\", function () {\r",
+									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
+									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					]
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"correo\": \"foo\",\r\n    \"contrasena\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/login",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{app_base}}",
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
 				},
+				{
+					"name": "Bad credencials [Test]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.test(\"Status code returned Created correct\", function () {\r",
+									"     pm.response.to.have.status(400);//parametros malos\r",
+									" });\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"const responseData = pm.response.json();\r",
+									"pm.test(\"Result is an Object\", function () {\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The Note has created correct\", function () {\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
+									"});\r",
+									"\r",
+									"const expectedResponse = {\r",
+									"    \"status\": \"fail\",\r",
+									"    \"message\": \"Correo y contraseña requeridos\"\r",
+									"}\r",
+									"\r",
+									"pm.test(\"The data is the correct\", function () {\r",
+									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
+									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"correo\": \"foo\"    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/login",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{app_base}}",
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check not exists session [Test]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.test(\"Status code returned Created correct\", function () {\r",
+									"     pm.response.to.have.status(401);\r",
+									" });\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"const responseData = pm.response.json();\r",
+									"pm.test(\"Result is an Object\", function () {\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The Note has created correct\", function () {\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
+									"});\r",
+									"\r",
+									"const expectedResponse = {\r",
+									"    \"status\": \"fail\",\r",
+									"    \"message\": \"No hay sesiones activas\"\r",
+									"}\r",
+									"\r",
+									"pm.test(\"The data is the correct\", function () {\r",
+									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
+									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/session",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{app_base}}",
+								"v1",
+								"session"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Try to Access without login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.test(\"Status code returned Created correct\", function () {\r",
+									"     pm.response.to.have.status(401);\r",
+									" });\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Result is an Object\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Data has the correct structure\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"const expectedResponse = {\r",
+									"    \"status\": \"fail\",\r",
+									"    \"message\": \"No autorizado. Inicia sesión primero.\"\r",
+									"}\r",
+									"\r",
+									"pm.test(\"The data is the correct\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
+									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
+									"    \r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/casos",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{app_base}}",
+								"v1",
+								"casos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Loging Role [Test]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.test(\"Status code returned Created correct\", function () {\r",
+									"     pm.response.to.have.status(200);\r",
+									" });\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"const responseData = pm.response.json();\r",
+									"pm.test(\"Result is an Object\", function () {\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The Note has created correct\", function () {\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"data\");\r",
+									"});\r",
+									"\r",
+									"const expectedResponse = {\r",
+									"    \"status\": \"success\",\r",
+									"    \"message\": \"Login exitoso\",\r",
+									"    \"data\": {\r",
+									"        \"usuario\": \"Fiscal de Guate\"\r",
+									"    }\r",
+									"}\r",
+									"\r",
+									"pm.test(\"The data is the correct\", function () {\r",
+									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
+									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
+									"    pm.expect(responseData.data).to.eql(expectedResponse.data);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"correo\": \"fiscal_1@mp.gob.gt\",\r\n    \"contrasena\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/login",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{app_base}}",
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Try to Access with incorrect role",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.test(\"Status code returned Created correct\", function () {\r",
+									"     pm.response.to.have.status(403);\r",
+									" });\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"const responseData = pm.response.json();\r",
+									"pm.test(\"Result is an Object\", function () {\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The data has the correct structure\", function () {\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"const expectedResponse = {\r",
+									"    \"status\": \"fail\",\r",
+									"    \"message\": \"No tienes permisos para acceder a este recurso\"\r",
+									"}\r",
+									"\r",
+									"pm.test(\"The data is the correct\", function () {\r",
+									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
+									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
+									"    \r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/usuarios?fiscalia_id=D4604377-D30D-4A6C-AF07-8F4D40EB0189",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{app_base}}",
+								"v1",
+								"usuarios"
+							],
+							"query": [
+								{
+									"key": "fiscalia_id",
+									"value": "D4604377-D30D-4A6C-AF07-8F4D40EB0189"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.test(\"Status code returned Created correct\", function () {\r",
+									"     pm.response.to.have.status(200);\r",
+									" });\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"const responseData = pm.response.json();\r",
+									"pm.test(\"Result is an Object\", function () {\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The Note has created correct\", function () {\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
+									"});\r",
+									"\r",
+									"const expectedResponse = {\r",
+									"  \"status\": \"success\",\r",
+									"  \"message\": \"Sesión cerrada exitosamente\"\r",
+									"}\r",
+									"\r",
+									"pm.test(\"The data is the correct\", function () {\r",
+									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
+									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
+									"    pm.expect(responseData.data).to.eql(expectedResponse.data);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/logout",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{app_base}}",
+								"v1",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Lougout [Test]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.test(\"Status code returned Created correct\", function () {\r",
+									"     pm.response.to.have.status(401);\r",
+									" });\r",
+									"\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});\r",
+									"\r",
+									"const responseData = pm.response.json();\r",
+									"pm.test(\"Result is an Object\", function () {\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The Note has created correct\", function () {\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
+									"});\r",
+									"\r",
+									"const expectedResponse = {\r",
+									"    \"status\": \"fail\",\r",
+									"    \"message\": \"No hay sesiones activas\"\r",
+									"}\r",
+									"\r",
+									"pm.test(\"The data is the correct\", function () {\r",
+									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
+									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
+									"    pm.expect(responseData.data).to.eql(expectedResponse.data);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/session",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{app_base}}",
+								"v1",
+								"session"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login view",
+			"item": [
 				{
 					"name": "Loging",
 					"event": [
@@ -374,67 +705,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Logout",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									" pm.test(\"Status code returned Created correct\", function () {\r",
-									"     pm.response.to.have.status(200);\r",
-									" });\r",
-									"\r",
-									"pm.test(\"Content-Type is present\", function () {\r",
-									"    pm.response.to.have.header(\"Content-Type\");\r",
-									"});\r",
-									"\r",
-									"const responseData = pm.response.json();\r",
-									"pm.test(\"Result is an Object\", function () {\r",
-									"    pm.expect(responseData).to.be.an('object');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"The Note has created correct\", function () {\r",
-									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
-									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
-									"});\r",
-									"\r",
-									"const expectedResponse = {\r",
-									"  \"status\": \"success\",\r",
-									"  \"message\": \"Sesión cerrada exitosamente\"\r",
-									"}\r",
-									"\r",
-									"pm.test(\"The data is the correct\", function () {\r",
-									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
-									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
-									"    pm.expect(responseData.data).to.eql(expectedResponse.data);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/logout",
-							"protocol": "http",
-							"host": [
-								"{{host}}"
-							],
-							"port": "{{port}}",
-							"path": [
-								"{{app_base}}",
-								"v1",
-								"logout"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -473,7 +743,7 @@
 									"pm.test(\"Result is an Array with data\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(Array.isArray(jsonData.data)).to.be.true;\r",
-									"    pm.expect(jsonData.data).be.greaterThan(0);\r",
+									"    pm.expect(jsonData.data.length).be.greaterThan(0);\r",
 									"});\r",
 									"\r",
 									"const expectedResponse = {\r",
@@ -482,12 +752,12 @@
 									"  \"data\": [\r",
 									"    {\r",
 									"      \"id\": \"A888112F-5CC5-4FEE-8A4C-DD8A1F38C6AC\",\r",
-									"      \"nombre\": \"CASO-2025-001\",\r",
-									"      \"descripcion\": \"Caso de corrupción en entidad X\",\r",
+									"      \"numero_caso\": \"CASO-2025-001\",\r",
+									"      \"nombre\": \"Caso de corrupción en entidad X\",\r",
+									"      \"descripcion\": null,\r",
 									"      \"estado\": \"pendiente\",\r",
-									"      \"fiscal_id\": null,\r",
-									"    //   \"fecha_creacion\": \"2025-07-26T13:00:00.000Z\",\r",
-									"    //   \"fecha_modificacion\": \"2025-07-27T18:30:00.000Z\",\r",
+									"      \"usuario_asignado_id\": null,\r",
+									"      \"fiscalia_id\": 'D4604377-D30D-4A6C-AF07-8F4D40EB0189',\r",
 									"      \"usuario_creacion\": \"00000000-0000-0000-0000-000000000000\",\r",
 									"      \"usuario_modificacion\": \"00000000-0000-0000-0000-000000000000\"\r",
 									"    }\r",
@@ -495,9 +765,25 @@
 									"}\r",
 									"\r",
 									"pm.test(\"The data is the correct\", function () {\r",
+									"    const responseData = pm.response.json();\r",
 									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
 									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
-									"    pm.expect(responseData.data).to.eql(expectedResponse.data);\r",
+									"    \r",
+									"    var value = responseData.data[0];\r",
+									"    pm.expect(value).has.haveOwnProperty(\"fecha_creacion\");\r",
+									"    pm.expect(value).has.haveOwnProperty(\"usuario_creacion\");\r",
+									"    pm.expect(value).has.haveOwnProperty(\"fecha_modificacion\");\r",
+									"    pm.expect(value).has.haveOwnProperty(\"usuario_modificacion\");\r",
+									"\r",
+									"    pm.expect(value.id).to.eql(expectedResponse.data[0].id);\r",
+									"    pm.expect(value.numero_caso).to.eql(expectedResponse.data[0].numero_caso);\r",
+									"    pm.expect(value.nombre).to.eql(expectedResponse.data[0].nombre);\r",
+									"    pm.expect(value.descripcion).to.eql(expectedResponse.data[0].descripcion);\r",
+									"    pm.expect(value.estado).to.eql(expectedResponse.data[0].estado);\r",
+									"    pm.expect(value.usuario_asignado_id).to.eql(expectedResponse.data[0].usuario_asignado_id);\r",
+									"    pm.expect(value.fiscalia_id).to.eql(expectedResponse.data[0].fiscalia_id);\r",
+									"    pm.expect(value.usuario_creacion).to.eql(expectedResponse.data[0].usuario_creacion);\r",
+									"    pm.expect(value.usuario_modificacion).to.eql(expectedResponse.data[0].usuario_modificacion);\r",
 									"});\r",
 									""
 								],
@@ -556,18 +842,18 @@
 									"pm.test(\"Result is an Array with data\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(Array.isArray(jsonData.data)).to.be.true;\r",
-									"    pm.expect(jsonData.data).be.greaterThan(0);\r",
+									"    pm.expect(jsonData.data.length).be.greaterThan(0);\r",
 									"});\r",
 									"\r",
 									"const expectedResponse = {\r",
 									"  \"status\": \"success\",\r",
-									"  \"message\": \"Lista de casos obtenida correctamente\",\r",
+									"  \"message\": \"Lista de fiscalías obtenida correctamente\",\r",
 									"  \"data\": [\r",
 									"    {\r",
-									"      \"id\": \"61f77c30-fb3e-4558-bdb1-1c8a1e765c90\",\r",
+									"      \"id\": \"D4604377-D30D-4A6C-AF07-8F4D40EB0189\",\r",
 									"      \"nombre\": \"Fiscalía Contra el Crimen Organizado\",\r",
 									"      \"ubicacion\": \"Ciudad de Guatemala\",\r",
-									"      \"activo\": true\r",
+									"      \"activa\": true\r",
 									"    }\r",
 									"  ]\r",
 									"}\r",
@@ -576,7 +862,17 @@
 									"    const responseData = pm.response.json();\r",
 									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
 									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
-									"    pm.expect(responseData.data).to.eql(expectedResponse.data);\r",
+									"\r",
+									"    var value = responseData.data[0];\r",
+									"    pm.expect(value).has.haveOwnProperty(\"fecha_creacion\");\r",
+									"    pm.expect(value).has.haveOwnProperty(\"usuario_creacion\");\r",
+									"    pm.expect(value).has.haveOwnProperty(\"fecha_modificacion\");\r",
+									"    pm.expect(value).has.haveOwnProperty(\"usuario_modificacion\");\r",
+									"\r",
+									"    pm.expect(value.id).to.eql(expectedResponse.data[0].id);\r",
+									"    pm.expect(value.nombre).to.eql(expectedResponse.data[0].nombre);\r",
+									"    pm.expect(value.ubicacion).to.eql(expectedResponse.data[0].ubicacion);\r",
+									"    pm.expect(value.activa).to.eql(expectedResponse.data[0].activa);\r",
 									"});\r",
 									""
 								],
@@ -624,7 +920,7 @@
 									"    pm.expect(responseData).to.be.an('object');\r",
 									"});\r",
 									"\r",
-									"pm.test(\"The data has the correct structur\", function () {\r",
+									"pm.test(\"The data has the correct structure\", function () {\r",
 									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
 									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
 									"    pm.expect(responseData).has.haveOwnProperty(\"data\");\r",
@@ -633,7 +929,7 @@
 									"pm.test(\"Result is an Array with data\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(Array.isArray(jsonData.data)).to.be.true;\r",
-									"    pm.expect(jsonData.data).be.greaterThan(0);\r",
+									"    pm.expect(jsonData.data.length).be.greaterThan(0);\r",
 									"});\r",
 									"\r",
 									"const expectedResponse = {\r",
@@ -654,7 +950,20 @@
 									"pm.test(\"The data is the correct\", function () {\r",
 									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
 									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
-									"    pm.expect(responseData.data).to.eql(expectedResponse.data);\r",
+									"    \r",
+									"    var value = responseData.data[0];\r",
+									"    pm.expect(value).has.haveOwnProperty(\"fecha_creacion\");\r",
+									"    pm.expect(value).has.haveOwnProperty(\"usuario_creacion\");\r",
+									"    pm.expect(value).has.haveOwnProperty(\"fecha_modificacion\");\r",
+									"    pm.expect(value).has.haveOwnProperty(\"usuario_modificacion\");\r",
+									"    pm.expect(value).has.haveOwnProperty(\"usuario_modificacion\");\r",
+									"\r",
+									"    pm.expect(value.id).to.eql(expectedResponse.data[0].id);\r",
+									"    pm.expect(value.nombre).to.eql(expectedResponse.data[0].nombre);\r",
+									"    pm.expect(value.correo).to.eql(expectedResponse.data[0].correo);\r",
+									"    pm.expect(value.rol).to.eql(expectedResponse.data[0].rol);\r",
+									"    pm.expect(value.activo).to.eql(expectedResponse.data[0].activo);\r",
+									"    pm.expect(value.fiscalia_id).to.eql(expectedResponse.data[0].fiscalia_id);\r",
 									"});\r",
 									""
 								],
@@ -667,7 +976,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/usuarios?fiscalia_id=61f77c30-fb3e-4558-bdb1-1c8a1e765c90",
+							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/usuarios?fiscalia_id=D4604377-D30D-4A6C-AF07-8F4D40EB0189",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -681,7 +990,7 @@
 							"query": [
 								{
 									"key": "fiscalia_id",
-									"value": "61f77c30-fb3e-4558-bdb1-1c8a1e765c90"
+									"value": "D4604377-D30D-4A6C-AF07-8F4D40EB0189"
 								}
 							]
 						}
@@ -717,22 +1026,13 @@
 									"pm.test(\"Result is an Array with data\", function () {\r",
 									"    var jsonData = pm.response.json();\r",
 									"    pm.expect(Array.isArray(jsonData.data)).to.be.true;\r",
-									"    pm.expect(jsonData.data).be.greaterThan(0);\r",
+									"    pm.expect(jsonData.data.length).be.eql(0);\r",
 									"});\r",
 									"\r",
 									"const expectedResponse = {\r",
 									"  \"status\": \"success\",\r",
 									"  \"message\": \"Lista de usuarios obtenida correctamente\",\r",
-									"  \"data\": [\r",
-									"    {\r",
-									"      \"id\": \"8A8DD011-A79C-4A40-BEF0-730B51483734\",\r",
-									"      \"nombre\": \"Fiscal de Guate\",\r",
-									"      \"correo\": \"fiscal_1@mp.gob.gt\",\r",
-									"      \"rol\": \"FISCAL\",\r",
-									"      \"activo\": true,\r",
-									"      \"fiscalia_id\": \"D4604377-D30D-4A6C-AF07-8F4D40EB0189\"\r",
-									"    }\r",
-									"  ]\r",
+									"  \"data\": [ ]\r",
 									"}\r",
 									"\r",
 									"pm.test(\"The data is the correct\", function () {\r",
@@ -751,7 +1051,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/usuarios?fiscalia_id=61f77c30-fb3e-4558-bdb1-1c8a1e765c90",
+							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/usuarios?fiscalia_id=D4604377-0000-0000-0000-8F4D40EB0189",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -765,7 +1065,7 @@
 							"query": [
 								{
 									"key": "fiscalia_id",
-									"value": "61f77c30-fb3e-4558-bdb1-1c8a1e765c90"
+									"value": "D4604377-0000-0000-0000-8F4D40EB0189"
 								}
 							]
 						}
@@ -945,67 +1245,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "Post Lougout [Test]",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							" pm.test(\"Status code returned Created correct\", function () {\r",
-							"     pm.response.to.have.status(401);\r",
-							" });\r",
-							"\r",
-							"pm.test(\"Content-Type is present\", function () {\r",
-							"    pm.response.to.have.header(\"Content-Type\");\r",
-							"});\r",
-							"\r",
-							"const responseData = pm.response.json();\r",
-							"pm.test(\"Result is an Object\", function () {\r",
-							"    pm.expect(responseData).to.be.an('object');\r",
-							"});\r",
-							"\r",
-							"pm.test(\"The Note has created correct\", function () {\r",
-							"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
-							"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
-							"});\r",
-							"\r",
-							"const expectedResponse = {\r",
-							"    \"status\": \"fail\",\r",
-							"    \"message\": \"No hay sesiones activas\"\r",
-							"}\r",
-							"\r",
-							"pm.test(\"The data is the correct\", function () {\r",
-							"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
-							"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
-							"    pm.expect(responseData.data).to.eql(expectedResponse.data);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/session",
-					"protocol": "http",
-					"host": [
-						"{{host}}"
-					],
-					"port": "{{port}}",
-					"path": [
-						"{{app_base}}",
-						"v1",
-						"session"
-					]
-				}
-			},
-			"response": []
 		}
 	],
 	"event": [
