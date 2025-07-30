@@ -6,7 +6,7 @@ interface CasoModel {
   numero_caso: string;
   nombre: string;
   descripcion: string;
-  estado: string;
+  estado?: string;
   usuario_asignado_id?: string;
   fiscalia_id: string;
   fecha_creacion: Date;
@@ -15,7 +15,7 @@ interface CasoModel {
   usuario_modificacion: string;
 }
 
-interface CasoCreationModel extends Optional<CasoModel, 'id'|'usuario_asignado_id'> {}
+interface CasoCreationModel extends Optional<CasoModel, 'id'|'usuario_asignado_id'|'estado'> {}
 
 
 export class Caso extends Model<CasoModel, CasoCreationModel> implements CasoModel {
@@ -53,7 +53,7 @@ Caso.init({
     },
     estado: {
       type: DataTypes.STRING(50),
-      allowNull: false,
+      allowNull: true,
     },
     usuario_asignado_id: {
       type: DataTypes.UUID,

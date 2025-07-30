@@ -768,8 +768,9 @@
 									"    const responseData = pm.response.json();\r",
 									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
 									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
-									"    \r",
-									"    var value = responseData.data[0];\r",
+									"    console.log('searchgin on:', responseData.data, \"for:\", expectedResponse.data[0].id);\r",
+									"    var value = responseData.data.find( caso => caso.id === expectedResponse.data[0].id);\r",
+									"    console.log('found', value);\r",
 									"    pm.expect(value).has.haveOwnProperty(\"fecha_creacion\");\r",
 									"    pm.expect(value).has.haveOwnProperty(\"usuario_creacion\");\r",
 									"    pm.expect(value).has.haveOwnProperty(\"fecha_modificacion\");\r",
@@ -1209,7 +1210,8 @@
 									"    pm.expect(responseData).to.be.an('object');\r",
 									"});\r",
 									"\r",
-									"pm.test(\"The Note has created correct\", function () {\r",
+									"pm.test(\"The Caso has created correct\", function () {\r",
+									"    const responseData = pm.response.json();\r",
 									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
 									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
 									"    pm.expect(responseData).has.haveOwnProperty(\"data\");\r",
@@ -1223,13 +1225,15 @@
 									"        \"nombre\": \"Robo a mano armada\",\r",
 									"        \"descripcion\": \"El caso se refiere a un robo ocurrido en zona 1.\",\r",
 									"        \"fiscalia_id\": \"D4604377-D30D-4A6C-AF07-8F4D40EB0189\",\r",
-									"        \"fiscal_asignado_id\": null,\r",
+									"        \"usuario_asignado_id\": null,\r",
 									"        \"usuario_creacion\": \"00000000-0000-0000-0000-000000000000\",\r",
-									"        \"usuario_modificacion\": \"00000000-0000-0000-0000-000000000000\"\r",
+									"        \"usuario_modificacion\": \"00000000-0000-0000-0000-000000000000\",\r",
+									"        \"estado\": \"pendiente\"\r",
 									"    }\r",
 									"}\r",
 									"\r",
 									"pm.test(\"The data is the correct\", function () {\r",
+									"    const responseData = pm.response.json();\r",
 									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
 									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
 									"\r",
@@ -1239,15 +1243,14 @@
 									"    pm.expect(value).has.haveOwnProperty(\"fecha_modificacion\");\r",
 									"\r",
 									"    const expectedData = expectedResponse.data;\r",
-									"    pm.expect(value.numero_caso).to.eql(expectedData.numero_caso);\r",
-									"    pm.expect(value.nombre).to.eql(expectedData.nombre);\r",
-									"    pm.expect(value.descripcion).to.eql(expectedData.descripcion);\r",
-									"    pm.expect(value.estado).to.eql(expectedData.estado);\r",
-									"    pm.expect(value.usuario_asignado_id).to.eql(expectedData.usuario_asignado_id);\r",
-									"    pm.expect(value.fiscalia_id).to.eql(expectedData.fiscalia_id);\r",
-									"    pm.expect(value.fiscal_asignado_id).to.eql(expectedData.fiscal_asignado_id);\r",
-									"    pm.expect(value.usuario_creacion).to.eql(expectedData.usuario_creacion);\r",
-									"    pm.expect(value.usuario_modificacion).to.eql(expectedData.usuario_modificacion);\r",
+									"    pm.expect(expectedData.numero_caso).to.eql(value.numero_caso);\r",
+									"    pm.expect(expectedData.nombre).to.eql(value.nombre);\r",
+									"    pm.expect(expectedData.descripcion).to.eql(value.descripcion);\r",
+									"    pm.expect(expectedData.estado).to.eql(value.estado);\r",
+									"    pm.expect(expectedData.usuario_asignado_id).to.eql(value.usuario_asignado_id);\r",
+									"    pm.expect(expectedData.fiscalia_id).to.eql(value.fiscalia_id);\r",
+									"    pm.expect(expectedData.usuario_creacion).to.eql(value.usuario_creacion);\r",
+									"    pm.expect(expectedData.usuario_modificacion).to.eql(value.usuario_modificacion);\r",
 									"});\r",
 									""
 								],
@@ -1292,7 +1295,7 @@
 							"script": {
 								"exec": [
 									" pm.test(\"Status code returned Created correct\", function () {\r",
-									"     pm.response.to.have.status(409);//conflict\r",
+									"     pm.response.to.have.status(201);//created\r",
 									" });\r",
 									"\r",
 									"pm.test(\"Content-Type header is application/json\", function () {\r",
@@ -1304,7 +1307,8 @@
 									"    pm.expect(responseData).to.be.an('object');\r",
 									"});\r",
 									"\r",
-									"pm.test(\"The Note has created correct\", function () {\r",
+									"pm.test(\"The Caso response has the correct properties\", function () {\r",
+									"    const responseData = pm.response.json();\r",
 									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
 									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
 									"    pm.expect(responseData).has.haveOwnProperty(\"data\");\r",
@@ -1318,18 +1322,24 @@
 									"        \"nombre\": \"Robo a mano armada\",\r",
 									"        \"descripcion\": \"El caso se refiere a un robo ocurrido en zona 2.\",\r",
 									"        \"fiscalia_id\": \"D4604377-D30D-4A6C-AF07-8F4D40EB0189\",\r",
-									"        \"fiscal_asignado_id\": \"8A8DD011-A79C-4A40-BEF0-730B51483734\",\r",
+									"        \"usuario_asignado_id\": null,\r",
 									"        \"usuario_creacion\": \"00000000-0000-0000-0000-000000000000\",\r",
-									"        \"usuario_modificacion\": \"00000000-0000-0000-0000-000000000000\"\r",
+									"        \"usuario_modificacion\": \"00000000-0000-0000-0000-000000000000\",\r",
+									"        \"estado\": \"pendiente\"\r",
 									"    }\r",
 									"}\r",
 									"\r",
 									"pm.test(\"The data is the correct\", function () {\r",
+									"    const responseData = pm.response.json();\r",
 									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
 									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
 									"\r",
 									"    const value = responseData.data;\r",
 									"    pm.expect(value).has.haveOwnProperty(\"id\");\r",
+									"    pm.environment.set(\"casoId\", responseData.data.id);\r",
+									"\r",
+									"    console.log(\"casoId guardado:\", pm.environment.get(\"casoId\"));\r",
+									"\r",
 									"    pm.expect(value).has.haveOwnProperty(\"fecha_creacion\");\r",
 									"    pm.expect(value).has.haveOwnProperty(\"fecha_modificacion\");\r",
 									"\r",
@@ -1340,7 +1350,6 @@
 									"    pm.expect(value.estado).to.eql(expectedData.estado);\r",
 									"    pm.expect(value.usuario_asignado_id).to.eql(expectedData.usuario_asignado_id);\r",
 									"    pm.expect(value.fiscalia_id).to.eql(expectedData.fiscalia_id);\r",
-									"    pm.expect(value.fiscal_asignado_id).to.eql(expectedData.fiscal_asignado_id);\r",
 									"    pm.expect(value.usuario_creacion).to.eql(expectedData.usuario_creacion);\r",
 									"    pm.expect(value.usuario_modificacion).to.eql(expectedData.usuario_modificacion);\r",
 									"});\r",
@@ -1356,7 +1365,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"numero_caso\": \"EXP-2025-124\",\r\n  \"nombre\": \"Robo a mano armada\",\r\n  \"descripcion\": \"El caso se refiere a un robo ocurrido en zona 1.\",\r\n  \"fiscalia_id\": \"D4604377-D30D-4A6C-AF07-8F4D40EB0189\",\r\n  \"fiscal_asignado_id\":\"8A8DD011-A79C-4A40-BEF0-730B51483734\"\r\n}",
+							"raw": "{\r\n  \"numero_caso\": \"EXP-2025-124\",\r\n  \"nombre\": \"Robo a mano armada\",\r\n  \"descripcion\": \"El caso se refiere a un robo ocurrido en zona 2.\",\r\n  \"fiscalia_id\": \"D4604377-D30D-4A6C-AF07-8F4D40EB0189\",\r\n  \"fiscal_asignado_id\":\"8A8DD011-A79C-4A40-BEF0-730B51483734\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1399,7 +1408,8 @@
 									"    pm.expect(responseData).to.be.an('object');\r",
 									"});\r",
 									"\r",
-									"pm.test(\"The Note has created correct\", function () {\r",
+									"pm.test(\"Casos has not created\", function () {\r",
+									"    const responseData = pm.response.json();\r",
 									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
 									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
 									"});\r",
@@ -1410,6 +1420,7 @@
 									"}\r",
 									"\r",
 									"pm.test(\"The data is the correct\", function () {\r",
+									"    const responseData = pm.response.json();\r",
 									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
 									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
 									"});\r",
@@ -1456,7 +1467,7 @@
 							"script": {
 								"exec": [
 									" pm.test(\"Status code returned Created correct\", function () {\r",
-									"     pm.response.to.have.status(409);//conflict\r",
+									"     pm.response.to.have.status(200);//conflict\r",
 									" });\r",
 									"\r",
 									"pm.test(\"Content-Type header is application/json\", function () {\r",
@@ -1468,7 +1479,8 @@
 									"    pm.expect(responseData).to.be.an('object');\r",
 									"});\r",
 									"\r",
-									"pm.test(\"The Note has created correct\", function () {\r",
+									"pm.test(\"The Caso has update has the correct properties\", function () {\r",
+									"    const responseData = pm.response.json();\r",
 									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
 									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
 									"    pm.expect(responseData).has.haveOwnProperty(\"data\");\r",
@@ -1479,7 +1491,7 @@
 									"    \"message\": \"Caso actualizado correctamente\",\r",
 									"    \"data\": {\r",
 									"        \"id\": \"A888112F-5CC5-4FEE-8A4C-DD8A1F38C6AC\",\r",
-									"        \"numero_caso\": \"CASO-2025-001\",\r",
+									"        \"numero_caso\": \"CASO-2025-002\",\r",
 									"        \"nombre\": \"Caso de corrupción en entidad Y\",\r",
 									"        \"descripcion\": \"Actualización de detalles del caso\",\r",
 									"        \"estado\": \"cerrado\",\r",
@@ -1490,11 +1502,45 @@
 									"    }\r",
 									"};\r",
 									"\r",
+									"pm.test(\"The data is the correct\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
+									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
 									"\r",
+									"    const value = responseData.data;\r",
+									"    pm.expect(value).has.haveOwnProperty(\"id\");\r",
+									"    pm.environment.set(\"casoId\", responseData.data.id);\r",
+									"\r",
+									"    console.log(\"casoId guardado:\", pm.environment.get(\"casoId\"));\r",
+									"\r",
+									"    pm.expect(value).has.haveOwnProperty(\"fecha_creacion\");\r",
+									"    pm.expect(value).has.haveOwnProperty(\"fecha_modificacion\");\r",
+									"\r",
+									"    const expectedData = expectedResponse.data;\r",
+									"    pm.expect(value.numero_caso).to.eql(expectedData.numero_caso);\r",
+									"    pm.expect(value.nombre).to.eql(expectedData.nombre);\r",
+									"    pm.expect(value.descripcion).to.eql(expectedData.descripcion);\r",
+									"    pm.expect(value.estado).to.eql(expectedData.estado);\r",
+									"    pm.expect(value.usuario_asignado_id).to.eql(expectedData.usuario_asignado_id);\r",
+									"    pm.expect(value.fiscalia_id).to.eql(expectedData.fiscalia_id);\r",
+									"    pm.expect(value.fiscal_asignado_id).to.eql(expectedData.fiscal_asignado_id);\r",
+									"    pm.expect(value.usuario_creacion).to.eql(expectedData.usuario_creacion);\r",
+									"    pm.expect(value.usuario_modificacion).to.eql(expectedData.usuario_modificacion);\r",
+									"});\r",
 									"\r",
 									"\r",
 									"\r",
 									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"console.log(\"casoId guardado:\", pm.environment.get(\"casoId\"));"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -1514,7 +1560,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/casos/:id",
+							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/casos/:casoId",
 							"protocol": "http",
 							"host": [
 								"{{host}}"
@@ -1524,12 +1570,12 @@
 								"{{app_base}}",
 								"v1",
 								"casos",
-								":id"
+								":casoId"
 							],
 							"variable": [
 								{
-									"key": "id",
-									"value": "A888112F-5CC5-4FEE-8A4C-DD8A1F38C6AC"
+									"key": "casoId",
+									"value": "A888112F-0000-4FEE-8A4C-DD8A1F38C6AC"
 								}
 							]
 						}
@@ -1610,7 +1656,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "A888112F-5CC5-4FEE-8A4C-DD8A1F38C6AC"
 								}
 							]
 						}
