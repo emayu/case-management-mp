@@ -1675,7 +1675,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nuevo_fiscal_id\": \"uuid-del-nuevo-fiscal\",\r\n  \"motivo\": \"Cambio de turno\"\r\n}",
+							"raw": "{\r\n  \"nuevo_fiscal_id\": \"8A8DD011-A79C-4A40-BEF0-730B51483734\",\r\n  \"motivo\": \"Cambio de turno\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1699,7 +1699,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": ""
+									"value": "8A0A3C9F-F234-41B1-B3A6-9EDF35848788"
 								}
 							]
 						}

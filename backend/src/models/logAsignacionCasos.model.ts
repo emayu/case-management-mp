@@ -4,7 +4,7 @@ import { sequelize } from '../config/db';
 export interface LogAsignacionCasoModel {
     id: string;
     caso_id: string;
-    fiscal_anterior_id: string;
+    fiscal_anterior_id?: string;
     fiscal_nuevo_id: string;
     fecha: Date;
     motivo: string;
@@ -13,13 +13,13 @@ export interface LogAsignacionCasoModel {
     resultado_mensaje: string;
 }
 
-interface LogAsignacionCasoCreationModel extends Optional< LogAsignacionCasoModel, 'id'> {}
+interface LogAsignacionCasoCreationModel extends Optional< LogAsignacionCasoModel, 'id'|'fiscal_anterior_id'> {}
 
 
 export class LogAsignacionCaso extends Model<LogAsignacionCasoModel, LogAsignacionCasoCreationModel> implements LogAsignacionCasoModel{
     public id!: string;
     public caso_id!: string;
-    public fiscal_anterior_id!: string;
+    public fiscal_anterior_id?: string;
     public fiscal_nuevo_id!: string;
     public fecha!: Date;
     public motivo!: string;
@@ -41,7 +41,7 @@ LogAsignacionCaso.init({
     },
     fiscal_anterior_id: {
       type: DataTypes.UUID,
-      allowNull: false
+      allowNull: true
     },
     fiscal_nuevo_id: {
       type: DataTypes.UUID,

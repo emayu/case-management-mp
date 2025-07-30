@@ -7,7 +7,7 @@ export async function findAllByCasoId(req: Request, res: Response) {
     const { caso_id } = req.params; 
     try {
         const logAsignacionCasosList = await LogAsignacionCaso.findAll(
-            {where: { caso_id}}
+            {where: { caso_id}, order: [['fecha', 'DESC']]}
         );
         return sendResponse(res, 200, {
             "status": "success",
