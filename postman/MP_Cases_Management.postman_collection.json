@@ -1670,6 +1670,49 @@
 			"item": [
 				{
 					"name": "Reasignar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.test(\"Status code returned Created correct\", function () {\r",
+									"     pm.response.to.have.status(20o);//created\r",
+									" });\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"        pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Result is an Object\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"The Caso has created correct\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
+									"});\r",
+									"\r",
+									"const expectedResponse = {\r",
+									"    \"status\": \"success\",\r",
+									"    \"message\": \"Autorizado\"\r",
+									"}\r",
+									"\r",
+									"pm.test(\"The data is the correct\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
+									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
+									"\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -1699,7 +1742,88 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "8A0A3C9F-F234-41B1-B3A6-9EDF35848788"
+									"value": "A888112F-5CC5-4FEE-8A4C-DD8A1F38C6AC"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Log asignaciones after Reasignar [test]",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									" pm.test(\"Status code returned Created correct\", function () {\r",
+									"     pm.response.to.have.status(200);\r",
+									" });\r",
+									"\r",
+									"pm.test(\"Content-Type is json\", function () {\r",
+									"    pm.expect(pm.response.headers.get('Content-Type')).to.include('application/json');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Result is an Object\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Data has the correct structure\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"status\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"message\");\r",
+									"    pm.expect(responseData).has.haveOwnProperty(\"data\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Result is an Array with data\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(Array.isArray(jsonData.data)).to.be.true;\r",
+									"});\r",
+									"\r",
+									"const expectedResponse = {\r",
+									"  \"status\": \"success\",\r",
+									"  \"message\": \"Historial de asignaciones obtenido correctamente\",\r",
+									"  \"data\": [ ]\r",
+									"    \r",
+									"}\r",
+									"\r",
+									"pm.test(\"The data is the correct\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
+									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
+									"\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://{{host}}:{{port}}/{{app_base}}/v1/casos/:id/log-asignaciones",
+							"protocol": "http",
+							"host": [
+								"{{host}}"
+							],
+							"port": "{{port}}",
+							"path": [
+								"{{app_base}}",
+								"v1",
+								"casos",
+								":id",
+								"log-asignaciones"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "A888112F-5CC5-4FEE-8A4C-DD8A1F38C6AC"
 								}
 							]
 						}
