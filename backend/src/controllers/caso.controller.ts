@@ -8,6 +8,7 @@ import { Usuario } from '../models/usuario.model';
 import { RESULTADO_ASIGNACION, CASO_ESTADOS } from '../constants'; 
 import { Result } from 'tedious/lib/token/helpers';
 import { sequelize } from '../config/db';
+import { ApiResponse } from '../types/responses';
 
 export async function getCasos(req: Request, res: Response) {
     try {
@@ -129,21 +130,21 @@ export async function reasignar(req: Request, res: Response) {
     let asignacion_result_message;
     try {
         //inicia transacción para garantizar atomicidad de datos
-        await sequelize.transaction(async (t) => {
-            const casoInfo = await Caso.findByPk(caso_id);
+        const [statusCode, bodyResponse] = await sequelize.transaction<[number, ApiResponse]>(async (t) => {
+            const casoInfo = await Caso.findByPk(caso_id, {transaction:t});
             if (casoInfo == null) {
-                return sendResponse(res, 404, {
+                return [404, {
                     status: 'fail',
                     message: `El caso con id:${caso_id} no fue encontrado`
-                });
+                }];
             }
 
-            const fiscalNuevoInfo = await Usuario.findByPk(nuevo_fiscal_id);
+            const fiscalNuevoInfo = await Usuario.findByPk(nuevo_fiscal_id, {transaction:t});
             if (fiscalNuevoInfo == null) {
-                return sendResponse(res, 404, {
+                return [404, {
                     status: 'fail',
                     message: `El nuevo_fiscal_id:${caso_id} no fue encontrado`
-                });
+                }];
             }
 
             const allowedRoles: Role[] = [ROLES.FISCAL, ROLES.ADMIN_FISCALIA];
@@ -161,12 +162,12 @@ export async function reasignar(req: Request, res: Response) {
                     resultado: RESULTADO_ASIGNACION.FALLO,
                     resultado_mensaje: asignacion_result_message,
                     fecha: new Date()
-                });
+                }, {transaction:t});
 
-                return sendResponse(res, 403, {
+                return [403, {
                     status: 'fail',
                     message: asignacion_result_message
-                });
+                }];
             }
             //comprobando que el caso pertenece a la misma fiscalía que el anterior
             const fiscalAnteriorInfo = await Usuario.findByPk(casoInfo.usuario_asignado_id);
@@ -177,12 +178,12 @@ export async function reasignar(req: Request, res: Response) {
                     resultado: RESULTADO_ASIGNACION.FALLO,
                     resultado_mensaje: asignacion_result_message,
                     fecha: new Date()
-                });
+                }, {transaction:t});
 
-                return sendResponse(res, 403, {
+                return [403, {
                     status: 'fail',
                     message: asignacion_result_message
-                });
+                }];
             }
 
             if (CASO_ESTADOS.PENDIENTE != casoInfo.estado) {
@@ -192,29 +193,33 @@ export async function reasignar(req: Request, res: Response) {
                     resultado: RESULTADO_ASIGNACION.FALLO,
                     resultado_mensaje: asignacion_result_message,
                     fecha: new Date()
-                });
+                }, {transaction:t});
 
-                return sendResponse(res, 403, {
+                return [403, {
                     status: 'fail',
                     message: asignacion_result_message
-                });
+                }];
             }
 
             asignacion_result_message = 'Autorizado';
             casoInfo.set('usuario_asignado_id', fiscalNuevoInfo?.id);
-            casoInfo.save();
+            await casoInfo.save({transaction:t});
+            // other form to perform operation
+            // await Caso.update( { usuario_asignado_id:fiscalNuevoInfo?.id }, 
+            //     { where: { id: casoInfo.id}, transaction:t});
             const log = await LogAsignacionCaso.create({
                 ...partialInfo,
                 resultado: RESULTADO_ASIGNACION.EXITO,
                 resultado_mensaje: asignacion_result_message,
                 fecha: new Date()
-            });
+            }, {transaction: t});
 
-            return sendResponse(res, 200, {
+            return [200, {
                 status: 'success',
                 message: asignacion_result_message
-            });
+            }];
         });
+        return sendResponse(res, statusCode, bodyResponse);
     } catch (error) {
         console.log(error);
         return sendResponse(res, 500, {
