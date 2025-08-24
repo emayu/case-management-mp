@@ -768,7 +768,7 @@
 									"    const responseData = pm.response.json();\r",
 									"    pm.expect(responseData.status).to.eql(expectedResponse.status);\r",
 									"    pm.expect(responseData.message).to.eql(expectedResponse.message);\r",
-									"    console.log('searchgin on:', responseData.data, \"for:\", expectedResponse.data[0].id);\r",
+									"    // console.log('searchgin on:', responseData.data, \"for:\", expectedResponse.data[0].id);\r",
 									"    var value = responseData.data.find( caso => caso.id === expectedResponse.data[0].id);\r",
 									"    console.log('found', value);\r",
 									"    pm.expect(value).has.haveOwnProperty(\"fecha_creacion\");\r",
