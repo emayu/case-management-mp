@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "set ENV=DEV&& ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "ts-node-dev --respawn --transpile-only --poll src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
     "test": "newman run ../postman/MP_Cases_Management.postman_collection.json"
